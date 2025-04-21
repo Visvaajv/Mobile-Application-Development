@@ -1,0 +1,321 @@
+Sign up:
+1) Firstly Create an Application by Name “SignUpApplication”
+2) Go to xml code of design change the layout to “RelativeLayout”
+3) Add TextView component & change the following properties:
+• Size: 24sp
+• Text: “Sign Up”
+• Center-Align
+4) Add Email (EditText) component & change the following properties in XML Code:
+• Hint: “Email-ID”
+• id: “@+id/emailEditText”
+5) Add Password (EditText) component & change the following properties in XML
+Code:
+• Hint: “Password”
+• id: “@+id/passwordEditText”
+6) Add Button component & change the following properties in XML
+• Id: “@+id/signBtn”
+• Text: “Sign Up”
+
+
+XML-CODE
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<TextView
+android:layout_width="129dp"
+android:layout_height="45dp"
+android:layout_alignParentEnd="true"
+android:layout_alignParentRight="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="168dp"
+android:layout_marginRight="168dp"
+android:layout_marginBottom="596dp"
+android:text="Sign Up"
+android:textSize="24sp"
+android:textStyle="bold"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintLeft_toLeftOf="parent"
+app:layout_constraintRight_toRightOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<EditText
+android:id="@+id/SignUp_email"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentEnd="true"
+android:layout_alignParentRight="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="114dp"
+android:layout_marginRight="114dp"
+android:layout_marginBottom="464dp"
+android:ems="10"
+android:hint="EmailId"
+android:inputType="textPersonName" />
+<Button
+android:id="@+id/signUpBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentEnd="true"
+android:layout_alignParentRight="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="168dp"
+android:layout_marginRight="168dp"
+android:layout_marginBottom="245dp"
+android:text="Sign Up" />
+<EditText
+android:id="@+id/SignUp_Password"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentEnd="true"
+android:layout_alignParentRight="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="101dp"
+android:layout_marginRight="101dp"
+android:layout_marginBottom="385dp"
+android:ems="10"
+android:hint="Password"
+android:inputType="textPassword" />
+</RelativeLayout>
+
+
+JAVA-CODE
+package com.example.signupapplication;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import java.util.regex.Pattern;
+public class MainActivity extends AppCompatActivity {
+EditText email_Sign, password_Sign;
+Button signUp_btn;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+email_Sign=(EditText)findViewById(R.id.SignUp_email);
+password_Sign=(EditText)findViewById(R.id.SignUp_Password);
+signUp_btn =(Button)findViewById(R.id.signUpBtn);
+signUp_btn.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+String email = email_Sign.getText().toString();
+String password = password_Sign.getText().toString();
+if(!isValidPassword(password)) {
+Toast.makeText(MainActivity.this,"Password doesn't match
+rules",Toast.LENGTH_SHORT).show();
+return;
+}
+Intent intent = new Intent(MainActivity.this,loginActivity.class);
+intent.putExtra("email",email);
+intent.putExtra("password",password);
+startActivity(intent);
+}
+});
+}
+Pattern lowerCase= Pattern.compile("^.*[a-z].*$");
+Pattern upperCase=Pattern.compile("^.*[A-Z].*$");
+Pattern number = Pattern.compile("^.*[0-9].*$");
+Pattern special_Chara = Pattern.compile("^.*[^a-zA-Z0-9].*$");
+private Boolean isValidPassword(String password){
+if(password.length()<8) {
+return false;
+}
+if(!lowerCase.matcher(password).matches()) {
+return false;
+}
+if(!upperCase.matcher(password).matches()) {
+return false;
+}
+if(!number.matcher(password).matches()) {
+return false;
+}
+if(!special_Chara.matcher(password).matches()) {
+return false;
+}
+return true;
+}
+}
+
+
+Login activity:
+1) Right click on Java folder-> new-> activity->empty activity-> name it as
+“LoginActivity”
+2) Go to xml code of design change the layout to “RelativeLayout”
+3) Add TextView component & change the following properties:
+• Size: 38dp
+• Text: “Login”
+• Center-Align
+4) Add Email (EditText) component & change the following properties in XML Code:
+• Hint: “Email ID”
+• id: “@+id/emailEditText”
+5) Add Password (EditText) component & change the following properties in
+XML Code:
+• Hint: “Password”
+• id: “@+id/passwordEditText”
+6) Add Button component & change the following properties in XML
+• Id: “@+id/loginBtn”
+• Text: “Login”
+
+
+XML-CODE
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".loginActivity">
+<TextView
+android:id="@+id/loginTextView"
+android:layout_width="225dp"
+android:layout_height="45dp"
+android:layout_alignParentEnd="true"
+android:layout_alignParentRight="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="113dp"
+android:layout_marginRight="113dp"
+android:layout_marginBottom="544dp"
+android:text="Login"
+android:textSize="30sp"
+android:textStyle="bold"
+app:layout_constraintBottom_toBottomOf="parent"
+tools:layout_editor_absoluteX="143dp" />
+<EditText
+android:id="@+id/passEditText"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentEnd="true"
+android:layout_alignParentRight="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="124dp"
+android:layout_marginRight="124dp"
+android:layout_marginBottom="380dp"
+android:ems="10"
+android:hint="password"
+android:inputType="textPassword" />
+<Button
+android:id="@+id/loginBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentEnd="true"
+android:layout_alignParentRight="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="218dp"
+android:layout_marginRight="218dp"
+android:layout_marginBottom="263dp"
+android:text="Login" />
+<EditText
+android:id="@+id/EmaileditText"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentEnd="true"
+android:layout_alignParentRight="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="127dp"
+android:layout_marginRight="127dp"
+android:layout_marginBottom="455dp"
+android:ems="10"
+android:hint="Email ID"
+android:inputType="textPersonName" />
+</RelativeLayout>
+
+
+JAVA-CODE
+package com.example.signupapplication;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+public class loginActivity extends AppCompatActivity {
+EditText emailEditText,passwordEditText;
+Button login_btn;
+int counter=2;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_login2);
+emailEditText=(EditText)findViewById(R.id.EmaileditText);
+passwordEditText=(EditText)findViewById(R.id.passEditText);
+login_btn=(Button)findViewById(R.id.loginBtn);
+String registeredEmail = getIntent().getStringExtra("email");
+String registeredPassword= getIntent().getStringExtra("password");
+login_btn.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+String email = emailEditText.getText().toString();
+String password = passwordEditText.getText().toString();
+if(registeredEmail.equals(email) && registeredPassword.equals(password))
+{
+Intent intent= new Intent(loginActivity.this,loginsuccessActivity.class);
+startActivity(intent);
+}
+else {
+Toast.makeText(loginActivity.this,"Invalid
+Credentials",Toast.LENGTH_SHORT).show();
+}
+counter--;
+if(counter==0){
+Toast.makeText(getBaseContext(),"failed to login
+attempts",Toast.LENGTH_SHORT).show();
+login_btn.setEnabled(false);
+}
+}
+});
+}
+}
+
+
+“LoginSuccessful”
+1) Right click on Java folder-> new-> activity->empty activity-> name it as
+“LoginSuccessful”
+2) Go to xml code of design change the layout to “RelativeLayout”
+3) Add TextView component & change the following properties:
+• Size: 38dp
+• Text: “Login Successful”
+• Center-Align
+
+
+XML-CODE
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".loginsuccessActivity">
+<TextView
+android:id="@+id/textView"
+android:layout_width="match_parent"
+android:layout_height="121dp"
+android:layout_alignParentEnd="true"
+android:layout_alignParentRight="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="-11dp"
+android:layout_marginRight="-11dp"
+android:layout_marginBottom="322dp"
+android:text="Login Successful"
+android:textSize="36sp"
+android:textStyle="bold" />
+</RelativeLayout>
+
+
+JAVA-CODE
+package com.example.signupapplication;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+public class loginsuccessActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_loginsuccess);
+}
+}
