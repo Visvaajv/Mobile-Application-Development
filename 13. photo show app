@@ -1,0 +1,180 @@
+AndroidManifest.xml
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.yourappname">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.YourAppName">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
+
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.smarteist.autoimageslider.SliderView
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        app:sliderAnimationDuration="600"
+        app:sliderAutoCycleDirection="back_and_forth"
+        app:sliderIndicatorAnimationDuration="600"
+        app:sliderIndicatorEnabled="true"
+        app:sliderIndicatorGravity="center_horizontal|bottom"
+        app:sliderIndicatorMargin="15dp"
+        app:sliderIndicatorOrientation="horizontal"
+        app:sliderIndicatorPadding="3dp"
+        app:sliderIndicatorRadius="2dp"
+        app:sliderIndicatorSelectedColor="#5A5A5A"
+        app:sliderIndicatorUnselectedColor="#FFF"
+        app:sliderScrollTimeInSec="1" />
+</RelativeLayout>
+
+
+SliderData.java
+
+public class SliderData {
+    private String imgUrl;
+
+    public SliderData(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+}
+
+
+slider_layout.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/myimage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/app_name" />
+</RelativeLayout>
+
+
+SliderAdapter.java
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.smarteist.autoimageslider.SliderViewAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterViewHolder> {
+
+    private final List<SliderData> mSliderItems;
+
+    public SliderAdapter(Context context, ArrayList<SliderData> sliderDataArrayList) {
+        this.mSliderItems = sliderDataArrayList;
+    }
+
+    @Override
+    public SliderAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.slider_layout, parent, false);
+        return new SliderAdapterViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(SliderAdapterViewHolder viewHolder, int position) {
+        SliderData sliderItem = mSliderItems.get(position);
+        Glide.with(viewHolder.itemView.getContext())
+                .load(sliderItem.getImgUrl())
+                .fitCenter()
+                .into(viewHolder.imageViewBackground);
+    }
+
+    @Override
+    public int getCount() {
+        return mSliderItems.size();
+    }
+
+    static class SliderAdapterViewHolder extends ViewHolder {
+        ImageView imageViewBackground;
+
+        public SliderAdapterViewHolder(View itemView) {
+            super(itemView);
+            imageViewBackground = itemView.findViewById(R.id.myimage);
+        }
+    }
+}
+
+
+MainActivity.java
+
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+import com.smarteist.autoimageslider.SliderView;
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    String url1 = "https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200-1.png";
+    String url2 = "https://media.geeksforgeeks.org/wp-content/uploads/20210915115837/gfg3-300x300.png";
+    String url3 = "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210420155809/gfg-new-logo.png";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        ArrayList<SliderData> sliderDataArrayList = new ArrayList<>();
+        SliderView sliderView = findViewById(R.id.slider);
+
+        sliderDataArrayList.add(new SliderData(url1));
+        sliderDataArrayList.add(new SliderData(url2));
+        sliderDataArrayList.add(new SliderData(url3));
+
+        SliderAdapter adapter = new SliderAdapter(this, sliderDataArrayList);
+        sliderView.setSliderAdapter(adapter);
+        sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
+        sliderView.setScrollTimeInSec(3);
+        sliderView.setAutoCycle(true);
+        sliderView.startAutoCycle();
+    }
+}
+
+
